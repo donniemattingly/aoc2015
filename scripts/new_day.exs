@@ -19,6 +19,7 @@ defmodule NewDay do
                    |> Path.join("lib/day0.ex")
                    |> File.read!()
                    |> String.replace("Day0", "Day#{day}")
+                   |> String.replace("Utils.get_input(0, 1)", "Utils.get_input(#{day}, 1)")
 
     File.write(new_path, updated_file)
   end
