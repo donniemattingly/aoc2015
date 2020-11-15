@@ -1,8 +1,20 @@
-# Advent of Code 2019
-
-After the stupidity that was [last year](https://github.com/donniemattingly/aoc2018)
-I'm doing 2019 all in [Elixir](https://elixir-lang.org).
+# Advent of Code 2015
 
 I'm trying to document the functions with doctests, so you should just be able
 to run `mix test` to confirm it's all working.
+
+
+## Installing
+
+Just run
+
+```bash
+mix deps.get
+```
+
+Then this weird version of mix compile to solve an issue with the matrex library I'm using (assuming you're on macOS 10.15)
+
+```bash
+C_INCLUDE_PATH=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Accelerate.framework/Frameworks/vecLib.framework/Headers mix compile
+```
 
