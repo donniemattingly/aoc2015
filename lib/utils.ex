@@ -53,6 +53,12 @@ defmodule Utils do
     |> Enum.filter(fn line -> !Enum.member?(["", "\n"], line) end)
   end
 
+  def split_each_char(input) do
+    input
+    |> String.split("")
+    |> Enum.filter(fn line -> !Enum.member?(["", "\n"], line) end)
+  end
+
   @doc """
   Run the function `fun` and returns the time in seconds elapsed
   while running it
