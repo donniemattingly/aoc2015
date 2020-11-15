@@ -47,6 +47,12 @@ defmodule Utils do
     |> map.()
   end
 
+  def split_lines(input) do
+    input
+    |> String.split("\n")
+    |> Enum.filter(fn line -> !Enum.member?(["", "\n"], line) end)
+  end
+
   @doc """
   Run the function `fun` and returns the time in seconds elapsed
   while running it
