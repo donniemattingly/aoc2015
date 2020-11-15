@@ -47,6 +47,10 @@ defmodule Utils do
     |> map.()
   end
 
+  def single_value(input) do
+    String.trim(input)
+  end
+
   def split_lines(input) do
     input
     |> String.split("\n")
