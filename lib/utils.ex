@@ -64,6 +64,17 @@ defmodule Utils do
     |> Enum.filter(fn line -> !Enum.member?(["", "\n"], line) end)
   end
 
+  def clamp(number, minimum, maximum) do
+    number
+    |> max(minimum)
+    |> min(maximum)
+  end
+
+  def at_least(number, minimum) do
+    number
+    |> max(minimum)
+  end
+
   @doc """
   Run the function `fun` and returns the time in seconds elapsed
   while running it
