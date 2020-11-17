@@ -55,6 +55,7 @@ defmodule Utils do
     input
     |> String.split("\n")
     |> Enum.filter(fn line -> !Enum.member?(["", "\n"], line) end)
+    |> Enum.map(&String.trim/1)
   end
 
   def split_each_char(input) do
