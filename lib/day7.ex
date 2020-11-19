@@ -2,6 +2,7 @@ defmodule Day7 do
   @moduledoc false
 
   use Bitwise
+  use Memoize
 
   def real_input do
     Utils.get_input(7, 1)
@@ -9,14 +10,9 @@ defmodule Day7 do
 
   def sample_input do
     """
-    123 -> x
-    456 -> y
-    x AND y -> d
-    x OR y -> e
-    x LSHIFT 2 -> f
-    y RSHIFT 2 -> g
-    NOT x -> h
-    NOT y -> i
+    12 -> x
+    1 OR x -> b
+    b -> a
     """
   end
 
@@ -50,14 +46,13 @@ defmodule Day7 do
   end
 
   def real_input1, do: real_input()
-  def real_input2, do: real_input()
+  def real_input2, do: Utils.get_input(7, 2)
 
 
   def parse_input1(input), do: parse_input(input)
   def parse_input2(input), do: parse_input(input)
 
   def solve1(input), do: solve(input)
-  def solve2(input), do: solve(input)
 
   def parse_and_solve1(input),
       do: parse_input1(input)
@@ -125,10 +120,11 @@ defmodule Day7 do
   def keys_from_input({command, x, y}), do: [x, y]
 
   def can_perform_instruction?(wires, {input, output}) do
-    input
+    res = input
     |> keys_from_input()
-    |> Enum.map(&Map.get(wires, &1))
-    |> Enum.all?(&Function.identity/1)
+    |> Enum.map(&get_or_literal(wires, &1))
+    |> Enum.all?(fn x -> x != nil end)
+    res
   end
 
   def clamp(number),
@@ -153,13 +149,20 @@ defmodule Day7 do
     |> String.to_integer(2)
   end
 
+  def get_or_literal(wires, value) do
+    case Regex.match?(~r/\d+/, value) do
+      true -> String.to_integer(value)
+      false -> Map.get(wires, value)
+    end
+  end
+
   def perform_instruction(wires, {{:set, number}, output}), do: Map.put(wires, output, number)
-  def perform_instruction(wires, {{:pass, wire}, output}), do: Map.put(wires, output, Map.get(wires, wire))
+  def perform_instruction(wires, {{:pass, wire}, output}), do: Map.put(wires, output, get_or_literal(wires, wire))
   def perform_instruction(wires, {{:not, wire}, output}),
       do: Map.put(
         wires,
         output,
-        Map.get(wires, wire)
+        get_or_literal(wires, wire)
         |> shitty_not
         |> clamp
       )
@@ -167,7 +170,7 @@ defmodule Day7 do
       do: Map.put(
         wires,
         output,
-        Map.get(wires, wire)
+        get_or_literal(wires, wire)
         |> bsl(amount)
         |> clamp
       )
@@ -175,7 +178,7 @@ defmodule Day7 do
       do: Map.put(
         wires,
         output,
-        Map.get(wires, wire)
+        get_or_literal(wires, wire)
         |> bsr(amount)
         |> clamp
       )
@@ -183,14 +186,14 @@ defmodule Day7 do
       do: Map.put(
         wires,
         output,
-        band(Map.get(wires, x), Map.get(wires, y))
+        band(get_or_literal(wires, x), get_or_literal(wires, y))
         |> clamp
       )
   def perform_instruction(wires, {{:or, x, y}, output}),
       do: Map.put(
         wires,
         output,
-        bor(Map.get(wires, x), Map.get(wires, y))
+        bor(get_or_literal(wires, x), get_or_literal(wires, y))
         |> clamp
       )
 
@@ -222,5 +225,13 @@ defmodule Day7 do
     input
     |> wires_from_instructions
     |> emulate_circuit(input)
+    |> Map.get("a")
+  end
+
+  def solve2(input) do
+    input
+    |> wires_from_instructions
+    |> emulate_circuit(input)
+    |> Map.get("a")
   end
 end
