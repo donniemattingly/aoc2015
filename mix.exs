@@ -27,7 +27,7 @@ defmodule Adventofcode.MixProject do
       {:earmark, "~> 1.2", only: :dev},
       {:ex_doc, "~> 0.19", only: :dev},
       {:matrex, "~> 0.6"},
-      {:libgraph, "~> 0.13"},
+      {:libgraph, "~> 0.16"},
       {:flow, "~> 0.14"},
       {:memoize, "~> 1.2"},
       {:combine, "~> 0.10.0"},
