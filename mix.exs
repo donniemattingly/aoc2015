@@ -30,8 +30,11 @@ defmodule Adventofcode.MixProject do
       {:libgraph, "~> 0.16"},
       {:flow, "~> 0.14"},
       {:memoize, "~> 1.2"},
+      {:jason, "~> 1.4"},
+      {:file_system, "~> 0.2"},
       {:combine, "~> 0.10.0"},
       {:color_utils, "0.2.0"},
+      {:debounce, "~> 0.1.0"},
       {:comb, git: "https://github.com/tallakt/comb.git"}
     ]
   end
