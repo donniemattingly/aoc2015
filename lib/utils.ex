@@ -143,7 +143,7 @@ defmodule Utils do
   def permutations([]), do: [[]]
 
   def permutations(list),
-      do: for(elem <- list, rest <- permutations(list -- [elem]), do: [elem | rest])
+    do: for(elem <- list, rest <- permutations(list -- [elem]), do: [elem | rest])
 
   def log_inspect(value, description, opts \\ []) when @log do
     IO.puts(description <> ": ")
@@ -154,10 +154,10 @@ defmodule Utils do
 
   def flatten_map(map) when is_map(map) do
     map
-    |> Map.to_list
+    |> Map.to_list()
     |> do_flatten([])
-    |> IO.inspect
-    |> Map.new
+    |> IO.inspect()
+    |> Map.new()
   end
 
   defp do_flatten([], acc), do: acc
@@ -172,20 +172,21 @@ defmodule Utils do
     do_flatten(rest, [kv | acc])
   end
 
-
   def nested_tuple_to_list(list) when is_list(list) do
     Enum.map(list, &nested_tuple_to_list/1)
   end
 
   def nested_tuple_to_list(tuple) when is_tuple(tuple) do
     tuple
-    |> Tuple.to_list
+    |> Tuple.to_list()
     |> Enum.map(&nested_tuple_to_list/1)
   end
+
   def nested_tuple_to_list(x), do: x
 
   def color_for_digit(digit) do
     import IO.ANSI
+
     colors = [
       "#e6194b",
       "#3cb44b",
@@ -211,42 +212,45 @@ defmodule Utils do
       "#000000"
     ]
 
-    %{red: r, green: g, blue: b} = Enum.at(
-                                     colors,
-                                     digit
-                                     |> String.to_integer
-                                   )
-                                   |> String.upcase
-                                   |> ColorUtils.hex_to_rgb
+    %{red: r, green: g, blue: b} =
+      Enum.at(
+        colors,
+        digit
+        |> String.to_integer()
+      )
+      |> String.upcase()
+      |> ColorUtils.hex_to_rgb()
 
     color_background(floor(r / 50), floor(g / 50), floor(b / 50))
   end
 
   def colorize_digit(digit) do
     import IO.ANSI
-    digit <> (
-      digit
-      |> color_for_digit)
+
+    digit <>
+      (digit
+       |> color_for_digit)
   end
 
   def colorize_digits(digits) do
-    result = String.split(digits, "", trim: true)
-    |> Enum.map(&colorize_digit/1)
-    |> Enum.join
+    result =
+      String.split(digits, "", trim: true)
+      |> Enum.map(&colorize_digit/1)
+      |> Enum.join()
 
     result <> IO.ANSI.default_background()
   end
 
   def list_of_lists_to_map_by_point(list_of_lists) do
     list_of_lists
-    |> Stream.with_index
+    |> Stream.with_index()
     |> Stream.flat_map(&row_to_point_value_pair/1)
     |> Enum.into(%{})
   end
 
   def row_to_point_value_pair({row, row_number}) do
     row
-    |> Stream.with_index
+    |> Stream.with_index()
     |> Stream.map(fn {value, x} -> {{x, row_number}, value} end)
   end
 end

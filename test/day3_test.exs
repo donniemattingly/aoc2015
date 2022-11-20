@@ -24,5 +24,4 @@ defmodule Day3Test do
   test "part 2: real" do
     assert Day3.part2() == 2341
   end
-
 end

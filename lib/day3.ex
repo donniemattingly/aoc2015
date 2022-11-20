@@ -43,18 +43,20 @@ defmodule Day3 do
   def real_input1, do: real_input()
   def real_input2, do: real_input()
 
-
   def parse_input1(input), do: parse_input(input)
   def parse_input2(input), do: parse_input(input)
 
   def solve1(input), do: solve(input)
 
   def parse_and_solve1(input),
-      do: parse_input1(input)
-          |> solve1
+    do:
+      parse_input1(input)
+      |> solve1
+
   def parse_and_solve2(input),
-      do: parse_input2(input)
-          |> solve2
+    do:
+      parse_input2(input)
+      |> solve2
 
   def parse_input(input) do
     input
@@ -84,18 +86,44 @@ defmodule Day3 do
     |> MapSet.size()
   end
 
-  def do_santa_deliver_presents([move | moves], santa_pos, robot_pos, santa_visited, robot_visited) do
+  def do_santa_deliver_presents(
+        [move | moves],
+        santa_pos,
+        robot_pos,
+        santa_visited,
+        robot_visited
+      ) do
     new = move(move, santa_pos)
-    do_robot_deliver_presents(moves, new, robot_pos, MapSet.put(santa_visited, new), robot_visited)
+
+    do_robot_deliver_presents(
+      moves,
+      new,
+      robot_pos,
+      MapSet.put(santa_visited, new),
+      robot_visited
+    )
   end
 
   def do_santa_deliver_presents([], santa_pos, robot_pos, santa_visited, robot_visited) do
     MapSet.union(santa_visited, robot_visited)
   end
 
-  def do_robot_deliver_presents([move | moves], santa_pos, robot_pos, santa_visited, robot_visited) do
+  def do_robot_deliver_presents(
+        [move | moves],
+        santa_pos,
+        robot_pos,
+        santa_visited,
+        robot_visited
+      ) do
     new = move(move, robot_pos)
-    do_santa_deliver_presents(moves, santa_pos, new, santa_visited, MapSet.put(robot_visited, new))
+
+    do_santa_deliver_presents(
+      moves,
+      santa_pos,
+      new,
+      santa_visited,
+      MapSet.put(robot_visited, new)
+    )
   end
 
   def do_robot_deliver_presents([], santa_pos, robot_pos, santa_visited, robot_visited) do

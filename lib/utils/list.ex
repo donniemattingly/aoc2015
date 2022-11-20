@@ -32,6 +32,6 @@ defmodule Utils.List do
   def right_rotate(l, n), do: left_rotate(l, -n)
 
   def zip_with_index(list) do
-    Enum.zip(list, 0..length(list) - 1)
+    Enum.zip(list, 0..(length(list) - 1))
   end
 end

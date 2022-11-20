@@ -86,6 +86,7 @@ defmodule Day11 do
 
   def next_valid_password(password) do
     next = increment(password)
+
     cond do
       is_valid(next) -> next
       true -> next_valid_password(next)

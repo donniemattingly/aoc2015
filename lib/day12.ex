@@ -40,6 +40,7 @@ defmodule Day12 do
         else
           node |> Map.values() |> Enum.map(&count_recursively2/1) |> Enum.sum()
         end
+
       true ->
         0
     end

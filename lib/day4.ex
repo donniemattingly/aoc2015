@@ -43,7 +43,6 @@ defmodule Day4 do
   def real_input1, do: real_input()
   def real_input2, do: real_input()
 
-
   def parse_input1(input), do: parse_input(input)
   def parse_input2(input), do: parse_input(input)
 
@@ -51,11 +50,14 @@ defmodule Day4 do
   def solve2(input), do: solve(input)
 
   def parse_and_solve1(input),
-      do: parse_input1(input)
-          |> solve1
+    do:
+      parse_input1(input)
+      |> solve1
+
   def parse_and_solve2(input),
-      do: parse_input2(input)
-          |> solve2
+    do:
+      parse_input2(input)
+      |> solve2
 
   def parse_input(input) do
     input
@@ -72,7 +74,7 @@ defmodule Day4 do
 
   def get_adventcoin_from_chunk(chunk) do
     chunk
-    |> Enum.filter(&(&1))
+    |> Enum.filter(& &1)
     |> Enum.at(0)
   end
 
@@ -88,16 +90,16 @@ defmodule Day4 do
 
   def run_chunk(chunk, input) do
     chunk
-    |> Enum.map(&(Task.async(fn -> generate_adventcoin(input, &1) end)))
+    |> Enum.map(&Task.async(fn -> generate_adventcoin(input, &1) end))
     |> Enum.map(&Task.await/1)
   end
 
   def solve(input) do
-    1..10000000
+    1..10_000_000
     |> Stream.chunk_every(1000)
     |> Stream.map(&run_chunk(&1, input))
     |> Stream.map(&get_adventcoin_from_chunk/1)
-    |> Stream.filter(&(&1))
+    |> Stream.filter(& &1)
     |> Stream.map(&IO.inspect/1)
     |> Stream.take(1)
     |> Enum.to_list()

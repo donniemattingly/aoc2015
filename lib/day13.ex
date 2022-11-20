@@ -67,10 +67,11 @@ defmodule Day13 do
   end
 
   def add_me_to_options(input) do
-    my_mappings = input
-    |> Enum.flat_map(fn {a, b, _} -> [a, b] end)
-    |> MapSet.new()
-    |> Enum.flat_map(fn a -> [{"Donnie", a, 0}, {a, "Donnie", 0}] end)
+    my_mappings =
+      input
+      |> Enum.flat_map(fn {a, b, _} -> [a, b] end)
+      |> MapSet.new()
+      |> Enum.flat_map(fn a -> [{"Donnie", a, 0}, {a, "Donnie", 0}] end)
 
     input ++ my_mappings
   end

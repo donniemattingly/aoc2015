@@ -43,7 +43,6 @@ defmodule Day6 do
   def real_input1, do: real_input()
   def real_input2, do: real_input()
 
-
   def parse_input1(input), do: parse_input(input)
   def parse_input2(input), do: parse_input(input)
 
@@ -54,7 +53,10 @@ defmodule Day6 do
 
   def parse_range(range) do
     pattern = ~r/(\d+),(\d+) through (\d+),(\d+)/
-    [x1, y1, x2, y2] = Regex.run(pattern, range, capture: :all_but_first) |> Enum.map(&String.to_integer/1)
+
+    [x1, y1, x2, y2] =
+      Regex.run(pattern, range, capture: :all_but_first) |> Enum.map(&String.to_integer/1)
+
     {{x1, y1}, {x2, y2}}
   end
 
@@ -95,7 +97,7 @@ defmodule Day6 do
     input
     |> Enum.reduce(%{}, &update_grid/2)
     |> Map.values()
-    |> Enum.filter(&(&1))
+    |> Enum.filter(& &1)
     |> Enum.count()
   end
 
@@ -104,7 +106,7 @@ defmodule Day6 do
   end
 
   def update_grid_redux({:off, range}, grid) do
-    do_update_grid(grid, &(Utils.at_least(&1 - 1, 0)), range, 0)
+    do_update_grid(grid, &Utils.at_least(&1 - 1, 0), range, 0)
   end
 
   def update_grid_redux({:toggle, range}, grid) do
@@ -117,5 +119,4 @@ defmodule Day6 do
     |> Map.values()
     |> Enum.sum()
   end
-
 end

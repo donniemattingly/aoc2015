@@ -10,7 +10,7 @@ defmodule Day2Test do
   end
 
   test "part1: real" do
-    assert Day2.part1() == 1588178
+    assert Day2.part1() == 1_588_178
   end
 
   test "part 2: 2x3x4" do
@@ -22,7 +22,6 @@ defmodule Day2Test do
   end
 
   test "part2: real" do
-    assert Day2.part2() == 3783758
+    assert Day2.part2() == 3_783_758
   end
-
 end

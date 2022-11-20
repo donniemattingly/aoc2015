@@ -43,7 +43,6 @@ defmodule Day1 do
   def real_input1, do: real_input()
   def real_input2, do: real_input()
 
-
   def parse_input1(input), do: parse_input(input)
   def parse_input2(input), do: parse_input(input)
 

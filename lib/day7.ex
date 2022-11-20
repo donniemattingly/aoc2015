@@ -48,18 +48,20 @@ defmodule Day7 do
   def real_input1, do: real_input()
   def real_input2, do: Utils.get_input(7, 2)
 
-
   def parse_input1(input), do: parse_input(input)
   def parse_input2(input), do: parse_input(input)
 
   def solve1(input), do: solve(input)
 
   def parse_and_solve1(input),
-      do: parse_input1(input)
-          |> solve1
+    do:
+      parse_input1(input)
+      |> solve1
+
   def parse_and_solve2(input),
-      do: parse_input2(input)
-          |> solve2
+    do:
+      parse_input2(input)
+      |> solve2
 
   def parse_line(line) do
     [signal_term, output] = String.split(line, " -> ")
@@ -120,31 +122,32 @@ defmodule Day7 do
   def keys_from_input({command, x, y}), do: [x, y]
 
   def can_perform_instruction?(wires, {input, output}) do
-    res = input
-    |> keys_from_input()
-    |> Enum.map(&get_or_literal(wires, &1))
-    |> Enum.all?(fn x -> x != nil end)
+    res =
+      input
+      |> keys_from_input()
+      |> Enum.map(&get_or_literal(wires, &1))
+      |> Enum.all?(fn x -> x != nil end)
+
     res
   end
 
   def clamp(number),
-      do: number
-          |> min(65535)
-          |> max(0)
+    do:
+      number
+      |> min(65535)
+      |> max(0)
 
   def shitty_not(number) do
     number
     |> Integer.to_string(2)
     |> String.pad_leading(16, "0")
     |> String.to_charlist()
-    |> Enum.map(
-         fn char ->
-           case char do
-             48 -> 49
-             49 -> 48
-           end
-         end
-       )
+    |> Enum.map(fn char ->
+      case char do
+        48 -> 49
+        49 -> 48
+      end
+    end)
     |> to_string()
     |> String.to_integer(2)
   end
@@ -157,59 +160,70 @@ defmodule Day7 do
   end
 
   def perform_instruction(wires, {{:set, number}, output}), do: Map.put(wires, output, number)
-  def perform_instruction(wires, {{:pass, wire}, output}), do: Map.put(wires, output, get_or_literal(wires, wire))
+
+  def perform_instruction(wires, {{:pass, wire}, output}),
+    do: Map.put(wires, output, get_or_literal(wires, wire))
+
   def perform_instruction(wires, {{:not, wire}, output}),
-      do: Map.put(
+    do:
+      Map.put(
         wires,
         output,
         get_or_literal(wires, wire)
         |> shitty_not
         |> clamp
       )
+
   def perform_instruction(wires, {{:lshift, wire, amount}, output}),
-      do: Map.put(
+    do:
+      Map.put(
         wires,
         output,
         get_or_literal(wires, wire)
         |> bsl(amount)
         |> clamp
       )
+
   def perform_instruction(wires, {{:rshift, wire, amount}, output}),
-      do: Map.put(
+    do:
+      Map.put(
         wires,
         output,
         get_or_literal(wires, wire)
         |> bsr(amount)
         |> clamp
       )
+
   def perform_instruction(wires, {{:and, x, y}, output}),
-      do: Map.put(
+    do:
+      Map.put(
         wires,
         output,
         band(get_or_literal(wires, x), get_or_literal(wires, y))
         |> clamp
       )
+
   def perform_instruction(wires, {{:or, x, y}, output}),
-      do: Map.put(
+    do:
+      Map.put(
         wires,
         output,
         bor(get_or_literal(wires, x), get_or_literal(wires, y))
         |> clamp
       )
 
-
   def execute_instructions(wires, instructions) do
     instructions
     |> Enum.reduce(
-         {[], wires},
-         fn instruction, {pending_instructions, new_wires} ->
-           if can_perform_instruction?(new_wires, instruction) do
-             {pending_instructions, perform_instruction(new_wires, instruction)}
-           else
-             {[instruction | pending_instructions], new_wires}
-           end
-         end
-       )
+      {[], wires},
+      fn instruction, {pending_instructions, new_wires} ->
+        if can_perform_instruction?(new_wires, instruction) do
+          {pending_instructions, perform_instruction(new_wires, instruction)}
+        else
+          {[instruction | pending_instructions], new_wires}
+        end
+      end
+    )
   end
 
   def emulate_circuit(wires, instructions) do

@@ -43,7 +43,6 @@ defmodule Day2 do
   def real_input1, do: real_input()
   def real_input2, do: real_input()
 
-
   def parse_input1(input), do: parse_input(input)
   def parse_input2(input), do: parse_input(input)
 
@@ -57,11 +56,11 @@ defmodule Day2 do
   end
 
   def parse_input(input) do
-    input |> Utils.split_lines |> Enum.map(&parse_line/1)
+    input |> Utils.split_lines() |> Enum.map(&parse_line/1)
   end
 
   def paper_for_package([l, w, h]) do
-    sides = [l*w, w*h, h*l]
+    sides = [l * w, w * h, h * l]
     min = Enum.min(sides)
     Enum.reduce(sides, min, fn x, acc -> 2 * x + acc end)
   end
@@ -71,19 +70,19 @@ defmodule Day2 do
   end
 
   def volume(l, w, h) do
-    l*w*h
+    l * w * h
   end
 
   def ribbon_for_package([l, w, h]) do
-    perimeter = [{l, w}, {w, h}, {h, l}] |> Enum.map(&perimeter/1) |> Enum.min
+    perimeter = [{l, w}, {w, h}, {h, l}] |> Enum.map(&perimeter/1) |> Enum.min()
     perimeter + volume(l, w, h)
   end
 
   def solve(input) do
-    input |> Enum.map(&paper_for_package/1) |> Enum.sum
+    input |> Enum.map(&paper_for_package/1) |> Enum.sum()
   end
 
   def solve2(input) do
-    input |> Enum.map(&ribbon_for_package/1) |> Enum.sum
+    input |> Enum.map(&ribbon_for_package/1) |> Enum.sum()
   end
 end

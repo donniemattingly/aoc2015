@@ -2,7 +2,7 @@ defmodule AutoReload do
   use GenServer
 
   def watch() do
-    start_link(dirs: [File.cwd!])
+    start_link(dirs: [File.cwd!()])
   end
 
   def start_link(args) do
@@ -16,7 +16,10 @@ defmodule AutoReload do
     {:ok, %{watcher_pid: watcher_pid, debounce_pid: pid}}
   end
 
-  def handle_info({:file_event, watcher_pid, {path, events}}, %{watcher_pid: watcher_pid, debounce_pid: pid} = state) do
+  def handle_info(
+        {:file_event, watcher_pid, {path, events}},
+        %{watcher_pid: watcher_pid, debounce_pid: pid} = state
+      ) do
     # Your own logic for path and events
     Debounce.apply(pid)
     {:noreply, state}
@@ -27,5 +30,4 @@ defmodule AutoReload do
     IO.puts("stopped")
     {:noreply, state}
   end
-
 end

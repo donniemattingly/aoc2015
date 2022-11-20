@@ -40,18 +40,20 @@ defmodule Day8 do
   def real_input1, do: real_input()
   def real_input2, do: real_input()
 
-
   def parse_input1(input), do: parse_input(input)
   def parse_input2(input), do: parse_input(input)
 
   def solve1(input), do: solve(input)
 
   def parse_and_solve1(input),
-      do: parse_input1(input)
-          |> solve1
+    do:
+      parse_input1(input)
+      |> solve1
+
   def parse_and_solve2(input),
-      do: parse_input2(input)
-          |> solve2
+    do:
+      parse_input2(input)
+      |> solve2
 
   def parse_input(input) do
     input
@@ -68,7 +70,7 @@ defmodule Day8 do
     |> String.replace("\\\\", "*")
     |> String.replace("\\\"", "*")
     |> String.replace(~r/\\x[0-9a-f][0-9a-f]/, "*")
-    |> IO.inspect
+    |> IO.inspect()
     |> String.length()
   end
 
@@ -86,42 +88,38 @@ defmodule Day8 do
   def encoded_size(str) do
     str
     |> to_charlist
-    |> Enum.map(
-         fn
-           34 -> [92, 34]
-           92 -> [92, 92]
-           x -> x
-         end
-       )
-    |> List.flatten
-    |> IO.inspect
+    |> Enum.map(fn
+      34 -> [92, 34]
+      92 -> [92, 92]
+      x -> x
+    end)
+    |> List.flatten()
+    |> IO.inspect()
     |> Enum.count()
     |> Kernel.+(2)
   end
 
   def fancy(str) do
-    graphemes = str
-                |> String.graphemes()
-    Enum.count(graphemes, & &1 == "\"") + 2 * Enum.count(graphemes, & &1 == "\\")
+    graphemes =
+      str
+      |> String.graphemes()
+
+    Enum.count(graphemes, &(&1 == "\"")) + 2 * Enum.count(graphemes, &(&1 == "\\"))
   end
 
   def solve(input) do
     input
-    |> Enum.map(
-         fn str ->
-           string_code_size(str) - in_memory_size(str)
-         end
-       )
+    |> Enum.map(fn str ->
+      string_code_size(str) - in_memory_size(str)
+    end)
     |> Enum.sum()
   end
 
   def solve2(input) do
     input
-    |> Enum.map(
-         fn str ->
-           encoded_size(str) - string_code_size(str)
-         end
-       )
+    |> Enum.map(fn str ->
+      encoded_size(str) - string_code_size(str)
+    end)
     |> Enum.sum()
   end
 end

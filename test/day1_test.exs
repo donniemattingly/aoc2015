@@ -20,5 +20,4 @@ defmodule Day1Test do
   test "part 2 real" do
     assert Day1.part2() == 1797
   end
-
 end

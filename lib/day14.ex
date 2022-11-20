@@ -76,6 +76,7 @@ defmodule Day14 do
   end
 
   def do_times(fun, state, 0), do: state
+
   def do_times(fun, state, count) do
     new_state = fun.(state)
     do_times(fun, new_state, count - 1)
