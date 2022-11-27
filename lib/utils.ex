@@ -248,9 +248,34 @@ defmodule Utils do
     |> Enum.into(%{})
   end
 
+  def print_map_of_points(map) do
+    size_x = map |> Map.keys() |> Enum.map(&elem(&1, 0)) |> Enum.max()
+    size_y = map |> Map.keys() |> Enum.map(&elem(&1, 1)) |> Enum.max()
+
+    0..size_y
+    |> Enum.map(fn y ->
+      0..size_x
+      |> Enum.map(fn x ->
+        Map.get(map, {x, y})
+      end)
+      |> Enum.join("")
+    end)
+    |> Enum.join("\n")
+    |> IO.puts
+
+    map
+  end
+
   def row_to_point_value_pair({row, row_number}) do
     row
     |> Stream.with_index()
     |> Stream.map(fn {value, x} -> {{x, row_number}, value} end)
+  end
+
+  def do_times(fun, state, 0), do: state
+
+  def do_times(fun, state, count) do
+    new_state = fun.(state)
+    do_times(fun, new_state, count - 1)
   end
 end
